@@ -17,10 +17,10 @@
         button { padding: 12px; font-weight: bold; border-radius: 12px; border: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
         .quiz-btn { background: #ff69b4; color: white; width: 100%; margin-bottom: 10px; display: block; }
         
-        /* Fixed YES button starts visible */
-        #yes { background: #ff69b4; color: white; position: fixed; bottom: 20px; right: 20px; width: 85px; height: 50px; z-index: 999; border: 2px solid white; display: block; }
+        #yes { background: #ff69b4; color: white; position: fixed; bottom: 20px; right: 20px; width: 85px; height: 50px; z-index: 999; border: 2px solid white; }
         #fake-no { background: #dddddd; color: #888888; width: 100%; }
         
+        /* TINY 25vw x 25vh 8x8 GRID */
         #grid-container { 
             display: none; 
             grid-template-columns: repeat(8, 1fr); 
@@ -37,6 +37,7 @@
             justify-items: stretch; 
             border: 2px solid #ff69b4; 
             border-radius: 10px; 
+            box-shadow: 0 0 15px rgba(0,0,0,0.1); 
         }
         .grid-yes { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: white; border-radius: 2px; cursor: pointer; }
         .f { background: #006400; } 
@@ -78,37 +79,32 @@
 
     const messages = {
         1: "too slow, Ayang!", 2: "Keep trying if you love me", 3: "admit you are musyop",
-        4: "i think you're not very good at this", 5: "almost there...i guess. Try the grey button",
-        6: "Just kidding haha YOUR musyop", 7: "I know I spelled that last one wrongly. TRY AGAIN",
-        8: "Are you pissed off now tayamm?", 9: "Ayann...Bet that grey button works",
-        10: "Okay, I promise this is the last one", 11: "NOPE, TRY AGAIN HAHA",
-        12: "X sygggg iiiii....Tayamm I takk", 13: "Ready to admit you are musyop now?",
-        14: "YES YOU ARE", 15: "Okay you win Ayan, catch it now!"
+        4: "i think you're not very good at this", 5: "almost there...i guess. Try the grey button.",
+        6: "Just kidding haha YOUR musyop", 7: "I know I spelled that last one wrongly",
+        8: "Are you pissed off now ayann?", 9: "Bet that grey button works",
+        10: "Okay, I promise this is the last one", 11: "NOPE, TRY AGAIN",
+        12: "X sygggg iiiii...Tayamm I takk??", 13: "Ready to admit you are musyop now?",
+        14: "YES YOU ARE", 15: "Okay you win musyop, catch it now!"
     };
 
     function sinkFrame(e) {
         e.stopPropagation();
         const frame = document.getElementById('container');
-        const yesBtn = document.getElementById('yes');
         frame.style.transform = "translateY(110vh)"; 
         frame.style.opacity = "0";
-        yesBtn.style.display = "none"; // Hide pink button when sunk
         isSunk = true;
     }
 
     function reviveFrame() {
         if (!isSunk) return;
         const frame = document.getElementById('container');
-        const yesBtn = document.getElementById('yes');
         frame.style.transform = "translateY(0)";
         frame.style.opacity = "1";
-        yesBtn.style.display = "block"; // Show pink button back
         isSunk = false;
-        // Don't call moveYes() here so the revive click doesn't count as a win
+        moveYes();
     }
 
     function moveYes() {
-        if (isSunk) return; // Prevent clicking the button if it's technically hidden
         count++;
         const container = document.getElementById('container');
         const msg = document.getElementById('msg'), img = document.getElementById('meme-img'), yesBtn = document.getElementById('yes');
@@ -117,9 +113,9 @@
             img.src = memes[count - 1]; 
             if(messages[count]) msg.innerHTML = messages[count];
             
+            // GRID CHALLENGE AT STEP 9
             if (count === 9) { 
-                container.style.display = 'none'; 
-                yesBtn.style.display = 'none'; 
+                container.style.display = 'none'; // HIDE MAIN CARD
                 spawnGrid(); 
                 return; 
             }
@@ -147,8 +143,7 @@
                 b.onclick = (e) => { 
                     e.stopPropagation(); 
                     grid.style.display = 'none'; 
-                    document.getElementById('container').style.display = 'block';
-                    document.getElementById('yes').style.display = 'block';
+                    document.getElementById('container').style.display = 'block'; // SHOW CARD AGAIN
                     moveYes(); 
                 };
             } else {
@@ -163,11 +158,10 @@
     function nextAct() { renderQuiz("Activity? 🎡", ["Movie 🍿", "Arcade 👾"], 'act', nextWant); }
     function nextWant() { renderQuiz("What would u like? 😈", ["A kiss", "A hug", "A bite", "All of the above"], 'want', nextLike); }
     function nextLike() { renderQuiz("What do you like most? 😏", ["My voice", "My eyes", "My ass"], 'likeMost', nextSure); }
-    function nextSure() { renderQuiz("Are you sure... YOU WANT TO HAVE A DATE WITH ME? 🤨", ["Yes", "Not really"], 'sure', startTypingChallenge); }
+    function nextSure() { renderQuiz("Are you sure? 🤨", ["Yes", "Not really"], 'sure', startTypingChallenge); }
 
     function startTypingChallenge() {
         document.getElementById('container').style.display = 'none';
-        document.getElementById('yes').style.display = 'none';
         const form = document.getElementById('love-form');
         form.style.display = 'block';
         form.style.left = "50%"; form.style.top = "50%"; form.style.transform = "translate(-50%, -50%)";
@@ -203,7 +197,7 @@
     function finalPage() {
         document.getElementById('container').style.display = 'block';
         document.getElementById('container').innerHTML = `<h1>Confirmed! ❤️</h1>
-        <p style="font-size:1rem; color:#d02090; font-weight:bold;">Oloorr tiannnn ayann I ❤️ TAYAMMM UUUU 🥹</p>
+        <p style="font-size:1rem; color:#d02090; font-weight:bold;">Oloorr tiannnn ayann I ❤️ Tayamm uuu. SEE YOU SOON! 🥹</p>
         <p><b>Feb 17th!</b></p>
         <div style="text-align:left; font-size:0.8rem; padding: 10px; background: #fff0f5; border-radius:10px;">
             🍴 ${data.food} | 🎡 ${data.act}<br>

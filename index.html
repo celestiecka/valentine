@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Ayannn ❤️</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: #fff0f5; overflow: hidden; font-family: sans-serif; touch-action: manipulation; }
+        
+        #container { z-index: 10; text-align: center; background: white; padding: 20px; border-radius: 20px; border: 3px solid #ff69b4; width: 85%; max-width: 350px; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: transform 0.6s cubic-bezier(0.6, -0.28, 0.735, 0.045), opacity 0.4s; }
+        
+        .img-wrap { width: 100%; height: 180px; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; border-radius: 12px; background: #fdfdfd; overflow: hidden; }
+        #meme-img { width: 100%; height: 100%; object-fit: contain; }
+        #msg { font-weight: bold; font-size: 0.9rem; min-height: 3em; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #555; line-height: 1.3; }
+        
+        button { padding: 12px; font-weight: bold; border-radius: 12px; border: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .quiz-btn { background: #ff69b4; color: white; width: 100%; margin-bottom: 10px; display: block; }
+        
+        #yes { background: #ff69b4; color: white; position: fixed; bottom: 20px; right: 20px; width: 85px; height: 50px; z-index: 999; border: 2px solid white; }
+        #fake-no { background: #dddddd; color: #888888; width: 100%; }
+        
+        /* TINY 25vw x 25vh 8x8 GRID */
+        #grid-container { 
+            display: none; 
+            grid-template-columns: repeat(8, 1fr); 
+            gap: 2px; 
+            padding: 5px; 
+            z-index: 9999; 
+            background: #fff0f5; 
+            position: fixed; 
+            top: 37.5vh; 
+            left: 37.5vw; 
+            width: 25vw; 
+            height: 25vh; 
+            align-content: center; 
+            justify-items: stretch; 
+            border: 2px solid #ff69b4; 
+            border-radius: 10px; 
+            box-shadow: 0 0 15px rgba(0,0,0,0.1); 
+        }
+        .grid-yes { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: white; border-radius: 2px; cursor: pointer; }
+        .f { background: #006400; } 
+        .r { background: #007a00; } 
+        
+        #love-form { position: fixed; background: white; padding: 20px; border-radius: 15px; border: 3px solid #ff69b4; z-index: 10000; display: none; width: 240px; text-align: center; transition: all 0.1s ease; }
+        #love-input { width: 90%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; text-transform: uppercase; text-align: center; margin-bottom: 15px; font-size: 16px; outline: none; }
+        
+        .heart { position: fixed; top: -10%; font-size: 24px; animation: fall 3s linear forwards; pointer-events: none; z-index: 1; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+    </style>
+</head>
+<body onclick="reviveFrame()">
+
+<div id="container">
+    <h1 style="color: #d02090; font-size: 1.2rem;">Hey Ayang! ✨</h1>
+    <div class="img-wrap"><img id="meme-img" src="https://raw.githubusercontent.com/celestiecka/valentine/main/1.gif" alt="Loading..."></div>
+    <p id="msg">Will you be my forever valentine?</p>
+    <div id="btn-group"><button id="fake-no" onclick="sinkFrame(event)">YES, BUT IN GREY</button></div>
+</div>
+
+<div id="grid-container"></div>
+
+<div id="love-form" onmouseover="teleportForm()" ontouchstart="teleportForm()">
+    <p style="font-size: 0.85rem; font-weight: bold; color: #d02090; margin: 0 0 12px 0;">TYPE "I LOVE YOU" IN CAPS:</p>
+    <input type="text" id="love-input" placeholder="..." autocomplete="off">
+    <button class="quiz-btn" onclick="checkLove()">SUBMIT</button>
+</div>
+
+<button id="yes" onclick="moveYes()">YES! ❤️</button>
+
+<script>
+    let count = 0, jumpCount = 0, isSunk = false;
+    let data = { food: "", act: "", want: "", likeMost: "", sure: "" };
+
+    const username = "celestiecka"; 
+    const repo = "valentine";
+    const memes = Array.from({length: 15}, (_, i) => `https://raw.githubusercontent.com/${username}/${repo}/main/${i+1}.gif`);
+
+    const messages = {
+        1: "too slow, Ayang!", 2: "Keep trying if you love me", 3: "admit you are musyop",
+        4: "i think you're not very good at this", 5: "almost there...i guess",
+        6: "Just kidding haha YOUR musyop", 7: "I know I spelled that last one wrongly",
+        8: "Are you pissed off now?", 9: "Bet that grey button works",
+        10: "Okay, I promise this is the last one", 11: "NOPE, TRY AGAIN",
+        12: "X sygggg iiiii....", 13: "Ready to admit you are musyop now?",
+        14: "YES YOU ARE", 15: "Okay you win, catch it now!"
+    };
+
+    function sinkFrame(e) {
+        e.stopPropagation();
+        const frame = document.getElementById('container');
+        frame.style.transform = "translateY(110vh)"; 
+        frame.style.opacity = "0";
+        isSunk = true;
+    }
+
+    function reviveFrame() {
+        if (!isSunk) return;
+        const frame = document.getElementById('container');
+        frame.style.transform = "translateY(0)";
+        frame.style.opacity = "1";
+        isSunk = false;
+        moveYes();
+    }
+
+    function moveYes() {
+        count++;
+        const container = document.getElementById('container');
+        const msg = document.getElementById('msg'), img = document.getElementById('meme-img'), yesBtn = document.getElementById('yes');
+        
+        if (count <= 15) {
+            img.src = memes[count - 1]; 
+            if(messages[count]) msg.innerHTML = messages[count];
+            
+            // GRID CHALLENGE AT STEP 9
+            if (count === 9) { 
+                container.style.display = 'none'; // HIDE MAIN CARD
+                spawnGrid(); 
+                return; 
+            }
+
+            if (count === 15) {
+                yesBtn.style.position = "static"; yesBtn.style.width = "100%";
+                document.getElementById('btn-group').appendChild(yesBtn);
+                document.getElementById('fake-no').style.display = "none";
+            } else {
+                yesBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+                yesBtn.style.top = Math.random() * (window.innerHeight - 100) + "px";
+            }
+        } else { startQuiz(); }
+    }
+
+    function spawnGrid() {
+        const grid = document.getElementById('grid-container');
+        grid.innerHTML = ""; grid.style.display = 'grid';
+        let realIndex = Math.floor(Math.random() * 64);
+        for (let i = 0; i < 64; i++) {
+            const b = document.createElement('div');
+            b.innerHTML = "YES";
+            if (i === realIndex) {
+                b.className = "grid-yes r";
+                b.onclick = (e) => { 
+                    e.stopPropagation(); 
+                    grid.style.display = 'none'; 
+                    document.getElementById('container').style.display = 'block'; // SHOW CARD AGAIN
+                    moveYes(); 
+                };
+            } else {
+                b.className = "grid-yes f";
+                b.onclick = (e) => { e.stopPropagation(); alert("Wrong one, musyop!"); };
+            }
+            grid.appendChild(b);
+        }
+    }
+
+    function startQuiz() { renderQuiz("Food? 🍜", ["Sushi 🍣", "Pasta 🍝", "Steak 🥩"], 'food', nextAct); }
+    function nextAct() { renderQuiz("Activity? 🎡", ["Movie 🍿", "Arcade 👾"], 'act', nextWant); }
+    function nextWant() { renderQuiz("What would u like? 😈", ["A kiss", "A hug", "A bite", "All of the above"], 'want', nextLike); }
+    function nextLike() { renderQuiz("What do you like most? 😏", ["My voice", "My eyes", "My ass"], 'likeMost', nextSure); }
+    function nextSure() { renderQuiz("Are you sure? 🤨", ["Yes", "Not really"], 'sure', startTypingChallenge); }
+
+    function startTypingChallenge() {
+        document.getElementById('container').style.display = 'none';
+        const form = document.getElementById('love-form');
+        form.style.display = 'block';
+        form.style.left = "50%"; form.style.top = "50%"; form.style.transform = "translate(-50%, -50%)";
+    }
+
+    function teleportForm() {
+        if (jumpCount >= 100) return;
+        jumpCount++;
+        const form = document.getElementById('love-form');
+        const x = Math.random() * (window.innerWidth - 260);
+        const y = Math.random() * (window.innerHeight - 220);
+        form.style.left = x + "px";
+        form.style.top = y + "px";
+        form.style.transform = "none";
+    }
+
+    function checkLove() {
+        if (jumpCount < 100) return;
+        if (document.getElementById('love-input').value.trim().toUpperCase() === "I LOVE YOU") {
+            document.getElementById('love-form').style.display = 'none';
+            finalPage();
+        } else { alert("WRONG! Type: I LOVE YOU"); }
+    }
+
+    function renderQuiz(title, options, key, nextFunc) {
+        let html = `<h1>${title}</h1>`;
+        options.forEach(opt => { html += `<button class='quiz-btn' onclick="saveData('${key}', '${opt}');">${opt}</button>`; });
+        document.getElementById('container').innerHTML = html; window.nextStep = nextFunc;
+    }
+
+    function saveData(key, val) { data[key] = val; window.nextStep(); }
+
+    function finalPage() {
+        document.getElementById('container').style.display = 'block';
+        document.getElementById('container').innerHTML = `<h1>Confirmed! ❤️</h1>
+        <p style="font-size:1rem; color:#d02090; font-weight:bold;">Oloorr tiannnn ayann I ❤️ 🥹</p>
+        <p><b>Feb 17th!</b></p>
+        <div style="text-align:left; font-size:0.8rem; padding: 10px; background: #fff0f5; border-radius:10px;">
+            🍴 ${data.food} | 🎡 ${data.act}<br>
+            🎁 ${data.want} | ✨ ${data.likeMost}
+        </div><br><b>Screenshot this! ✨</b>`;
+    }
+
+    setInterval(() => {
+        const h = document.createElement('div'); h.innerHTML = '❤️'; h.className = 'heart';
+        h.style.left = Math.random() * 100 + 'vw'; document.body.appendChild(h);
+        setTimeout(() => h.remove(), 3000);
+    }, 300);
+</script>
+</body>
+</html>
